@@ -6,6 +6,7 @@ import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import Pages from 'vite-plugin-pages'
 import Components from 'unplugin-vue-components/vite'
+import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import AutoImport from 'unplugin-auto-import/vite'
 import Unocss from 'unocss/vite'
@@ -110,6 +111,11 @@ export default defineConfig({
           componentPrefix: '',
         }),
       ],
+    }),
+
+    Icons({
+      // defaultClass: 'inline',
+      defaultStyle: 'vertical-align: sub;display:inline;',
     }),
 
     // https://github.com/antfu/unocss

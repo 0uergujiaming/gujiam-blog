@@ -11,9 +11,12 @@ declare module '@vue/runtime-core' {
     List: typeof import('./src/components/List.vue')['default']
     Navbar: typeof import('./src/components/Navbar.vue')['default']
     README: typeof import('./src/components/README.md')['default']
+    RiMoonLine: typeof import('~icons/ri/moon-line')['default']
+    RiSunLine: typeof import('~icons/ri/sun-line')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Star: typeof import('./src/components/Star.vue')['default']
+    ToggleTheme: typeof import('./src/components/ToggleTheme.vue')['default']
   }
 }
 

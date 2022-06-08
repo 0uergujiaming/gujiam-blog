@@ -4,7 +4,7 @@
 
 <template>
   <header class="header" p-6 flex="~ " items-center>
-    <router-link to="/" class="logo font-400 text-xl">
+    <router-link to="/" class="logo font-500 text-xl">
       Gujiam
     </router-link>
     <div flex-1 />
@@ -16,6 +16,7 @@
       <a href="https://github.com/0uergujiaming" target="_blank" title="GitHub">
         <div i-uil-github-alt />
       </a>
+      <ToggleTheme />
     </nav>
   </header>
 </template>
