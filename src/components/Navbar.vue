@@ -9,8 +9,8 @@
     </router-link>
     <div flex-1 />
     <nav class="nav">
-      <router-link to="/blogs" title="Blog">
-        <span class="lt-md:hidden">Blog</span>
+      <router-link to="/blogs" title="博客">
+        <span class="lt-md:hidden">博客</span>
         <div i-ri-article-line md:hidden />
       </router-link>
       <a href="https://github.com/0uergujiaming" target="_blank" title="GitHub">
