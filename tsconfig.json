@@ -10,7 +10,7 @@
       "~/*": ["src/*"]
     },
     "resolveJsonModule": true,
-    "types": ["vite/client", "vite-plugin-vue-layouts/client"],
+    "types": ["vite/client", "vite-plugin-vue-layouts/client","vite-plugin-pages/client"],
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
