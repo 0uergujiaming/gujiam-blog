@@ -38,7 +38,6 @@ export default defineConfig({
         if (path.endsWith('.md')) {
           const md = fs.readFileSync(path, 'utf-8')
           const { data } = matter(md)
-          console.log(data)
           route.meta = Object.assign(route.meta || {}, { frontmatter: data })
         }
 

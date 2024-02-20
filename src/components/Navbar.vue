@@ -1,6 +1,10 @@
 <template>
   <header class="nav flex pa-6 flex-justify-between">
     <nav>
+      <RouterLink to="/" title="Home">
+        <span class="lt-md:hidden">Home</span>
+        <div i-carbon-home md:hidden />
+      </RouterLink>
       <RouterLink to="/blogs" title="Blog">
         <span class="lt-md:hidden">Blog</span>
         <div i-ri-article-line md:hidden />
@@ -29,6 +33,7 @@
   opacity: 1;
   text-decoration-color: inherit;
 }
+.nav nav,
 .right {
   display: flex;
   gap: 1.2rem;
