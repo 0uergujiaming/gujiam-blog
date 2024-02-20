@@ -9,10 +9,6 @@
         <span class="lt-md:hidden">Blog</span>
         <div i-ri-article-line md:hidden />
       </RouterLink>
-      <RouterLink to="/blogs" title="Blog">
-        <span class="lt-md:hidden">Blog</span>
-        <div i-ri-article-line md:hidden />
-      </RouterLink>
     </nav>
     <div class="right">
       <a href="https://github.com/0uergujiaming" target="_blank" title="GitHub">
