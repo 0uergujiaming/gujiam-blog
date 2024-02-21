@@ -2,7 +2,7 @@ import { resolve } from 'node:path'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import Vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 import Layouts from 'vite-plugin-vue-layouts'
 import Pages from 'vite-plugin-pages'
@@ -24,7 +24,7 @@ export default defineConfig({
   plugins: [
     UnoCSS(),
 
-    vue({
+    Vue({
       include: [/\.vue$/, /\.md$/],
       reactivityTransform: true,
       script: {
@@ -55,6 +55,7 @@ export default defineConfig({
       imports: ['vue', 'vue-router', '@vueuse/core'],
       dirs: ['src/composables'],
       vueTemplate: true,
+      dts: 'src/auto-imports.d.ts',
     }),
 
     Components({
