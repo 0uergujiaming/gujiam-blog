@@ -5,8 +5,3 @@ display: ''
 ---
 
 <BlogList />
-
-<route lang="yaml">
-meta:
-  layout: home
-</route>
