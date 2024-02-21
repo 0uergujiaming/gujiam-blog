@@ -11,6 +11,8 @@ import Components from 'unplugin-vue-components/vite'
 import Markdown from 'unplugin-vue-markdown/vite'
 import Shiki from 'markdown-it-shikiji'
 import VueDevTools from 'vite-plugin-vue-devtools'
+import anchor from 'markdown-it-anchor'
+import LinkAttributes from 'markdown-it-link-attributes'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -46,15 +48,11 @@ export default defineConfig({
     }),
 
     Layouts({
-      defaultLayout: 'home'
+      defaultLayout: 'home',
     }),
 
     AutoImport({
-      imports: [
-        'vue',
-        'vue-router',
-        '@vueuse/core',
-      ],
+      imports: ['vue', 'vue-router', '@vueuse/core'],
       dirs: ['src/composables'],
       vueTemplate: true,
     }),
@@ -79,8 +77,25 @@ export default defineConfig({
               light: 'vitesse-light',
             },
             defaultColor: false,
+            cssVariablePrefix: '--s-',
           })
         )
+
+        md.use(anchor, {
+          // slugify,
+          permalink: anchor.permalink.linkInsideHeader({
+            symbol: '#',
+            renderAttrs: () => ({ 'aria-hidden': 'true' }),
+          }),
+        })
+
+        md.use(LinkAttributes, {
+          matcher: (link: string) => /^https?:\/\//.test(link),
+          attrs: {
+            target: '_blank',
+            rel: 'noopener',
+          },
+        })
       },
     }),
 

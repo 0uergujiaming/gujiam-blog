@@ -5,9 +5,18 @@ const { frontmatter } = defineProps({
     required: true,
   },
 })
+const route = useRoute()
 </script>
 
 <template>
+  <div v-if="route.path !== '/'" class="prose m-auto mb-6">
+    <RouterLink
+      :to="route.path.split('/').slice(0, -1).join('/') || '/'"
+      class="font-mono op50 hover:op75"
+    >
+    <div i-carbon-arrow-left /> back
+  </RouterLink>
+  </div>
   <div v-if="frontmatter.display ?? frontmatter.title" class="prose m-auto mb-8" :class="[frontmatter.wrapperClass]">
     <h1 class="mb-0 slide-enter-50">
       {{ frontmatter.display ?? frontmatter.title }}
