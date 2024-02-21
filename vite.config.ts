@@ -81,9 +81,8 @@ export default defineConfig({
             cssVariablePrefix: '--s-',
           })
         )
-
+        
         md.use(anchor, {
-          // slugify,
           permalink: anchor.permalink.linkInsideHeader({
             symbol: '#',
             renderAttrs: () => ({ 'aria-hidden': 'true' }),
