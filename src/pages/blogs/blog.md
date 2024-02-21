@@ -475,6 +475,7 @@ const blogs = router
     </template>
   </ul>
 </template>
+```
 
 在`pages/blogs/index.md`中使用`BlogList`组件
 ```
@@ -488,6 +489,7 @@ description: 我的博客列表页面
 <BlogList />
 
 ```
+
 这样就实现了自动根据`blogs`目录下的文件生成博客列表,之后写博客直接在该目录下写`md`就行了
 
 ### devtools
