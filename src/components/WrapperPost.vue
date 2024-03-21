@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { formatDate } from '~/logics/theme';
+
 const { frontmatter } = defineProps({
   frontmatter: {
     type: Object,
@@ -21,6 +23,12 @@ const route = useRoute()
     <h1 class="mb-0 slide-enter-50">
       {{ frontmatter.display ?? frontmatter.title }}
     </h1>
+    <p
+      v-if="frontmatter.date"
+      class="opacity-50 !-mt-6 slide-enter-50"
+    >
+      {{ formatDate(frontmatter.date) }}
+    </p>
     <p v-if="frontmatter.subtitle" class="opacity-50 !-mt-6 italic slide-enter">
       {{ frontmatter.subtitle }}
     </p>
