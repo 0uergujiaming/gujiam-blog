@@ -182,7 +182,7 @@ h6:focus .header-anchor {
   text-overflow: ellipsis;
   height: 100%;
   overflow-y: auto;
-  --uno: rounded op0 mt-1 pb-5 transition duration-700;
+  --uno: rounded mt-1 pb-5 transition duration-700;
 }
 
 *:hover > .table-of-contents > .table-of-contents-anchor,

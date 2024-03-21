@@ -1,8 +1,17 @@
 ---
 title: 博客搭建
-date: 2021-10-31T16:00:00Z
+date: 2021-10-3 16:00:00
 description: 博客的搭建记录
 ---
+
+
+<route lang="yaml">
+meta:
+  layout: home
+</route>
+
+[[toc]]
+
 
 记录下博客项目的搭建记录
 

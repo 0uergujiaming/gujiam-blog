@@ -4,12 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --open",
+    "dev": "vite",
     "build": "vite-ssg build",
     "preview": "vite preview"
   },
   "dependencies": {
     "@vueuse/core": "^10.7.2",
+    "dayjs": "^1.11.10",
+    "markdown-it-table-of-contents": "^0.6.0",
     "nprogress": "^0.2.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"
@@ -33,6 +35,7 @@
     "typescript": "^5.0.2",
     "unocss": "^0.58.5",
     "unplugin-auto-import": "^0.17.5",
+    "unplugin-icons": "^0.18.5",
     "unplugin-vue-components": "^0.26.0",
     "unplugin-vue-markdown": "^0.26.0",
     "vite": "^4.4.5",

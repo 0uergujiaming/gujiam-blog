@@ -13,6 +13,11 @@ import Shiki from 'markdown-it-shikiji'
 import VueDevTools from 'vite-plugin-vue-devtools'
 import anchor from 'markdown-it-anchor'
 import LinkAttributes from 'markdown-it-link-attributes'
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
+
+// @ts-expect-error missing types
+import TOC from 'markdown-it-table-of-contents'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -53,7 +58,7 @@ export default defineConfig({
 
     AutoImport({
       imports: ['vue', 'vue-router', '@vueuse/core'],
-      dirs: ['src/composables'],
+      dirs: ['src/logics'],
       vueTemplate: true,
       dts: 'src/auto-imports.d.ts',
     }),
@@ -64,6 +69,11 @@ export default defineConfig({
       // allow auto import and register components used in markdown
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
       dts: 'src/components.d.ts',
+      resolvers: [
+        IconsResolver({
+          componentPrefix: '',
+        }),
+      ],
     }),
 
     Markdown({
@@ -96,7 +106,18 @@ export default defineConfig({
             rel: 'noopener',
           },
         })
+
+        md.use(TOC, {
+          includeLevel: [1, 2, 3, 4],
+          // slugify,
+          containerHeaderHtml: '<div class="table-of-contents-anchor"></div>',
+        })
       },
+    }),
+
+    Icons({
+      defaultClass: 'inline',
+      defaultStyle: 'vertical-align: sub;',
     }),
 
     VueDevTools(),
