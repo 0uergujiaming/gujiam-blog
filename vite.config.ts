@@ -4,17 +4,20 @@ import matter from 'gray-matter'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
-import Layouts from 'vite-plugin-vue-layouts'
-import Pages from 'vite-plugin-pages'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import Markdown from 'unplugin-vue-markdown/vite'
-import Shiki from 'markdown-it-shikiji'
 import VueDevTools from 'vite-plugin-vue-devtools'
-import anchor from 'markdown-it-anchor'
-import LinkAttributes from 'markdown-it-link-attributes'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
+import VueRouter from 'unplugin-vue-router/vite'
+import { VueRouterAutoImports } from 'unplugin-vue-router'
+
+import MarkdownItShiki from '@shikijs/markdown-it'
+import { rendererRich, transformerTwoslash } from '@shikijs/twoslash'
+// import Shiki from 'markdown-it-shikiji'
+import anchor from 'markdown-it-anchor'
+import LinkAttributes from 'markdown-it-link-attributes'
 
 // @ts-expect-error missing types
 import TOC from 'markdown-it-table-of-contents'
@@ -29,51 +32,26 @@ export default defineConfig({
   plugins: [
     UnoCSS(),
 
+    VueRouter({
+      extensions: ['.vue', '.md'],
+      routesFolder: 'src/pages',
+      logs: true,
+      extendRoute(route) {
+        const path = route.components.get('default')
+        if (!path)
+          return
+
+        if (path.endsWith('.md')) {
+          const { data } = matter(fs.readFileSync(path, 'utf-8'))
+          route.addToMeta({
+            frontmatter: data,
+          })
+        }
+      },
+    }),
+
     Vue({
       include: [/\.vue$/, /\.md$/],
-      reactivityTransform: true,
-      script: {
-        defineModel: true,
-      },
-    }),
-
-    Pages({
-      extensions: ['vue', 'md'],
-      dirs: 'src/pages',
-      extendRoute(route) {
-        const path = resolve(__dirname, route.component.slice(1))
-        if (path.endsWith('.md')) {
-          const md = fs.readFileSync(path, 'utf-8')
-          const { data } = matter(md)
-          route.meta = Object.assign(route.meta || {}, { frontmatter: data })
-        }
-
-        return route
-      },
-    }),
-
-    Layouts({
-      defaultLayout: 'home',
-    }),
-
-    AutoImport({
-      imports: ['vue', 'vue-router', '@vueuse/core'],
-      dirs: ['src/logics'],
-      vueTemplate: true,
-      dts: 'src/auto-imports.d.ts',
-    }),
-
-    Components({
-      // allow auto load markdown components under `./src/components/`
-      extensions: ['vue', 'md'],
-      // allow auto import and register components used in markdown
-      include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
-      dts: 'src/components.d.ts',
-      resolvers: [
-        IconsResolver({
-          componentPrefix: '',
-        }),
-      ],
     }),
 
     Markdown({
@@ -82,16 +60,22 @@ export default defineConfig({
       headEnabled: true,
       async markdownItSetup(md) {
         md.use(
-          await Shiki({
+          await MarkdownItShiki({
             themes: {
               dark: 'vitesse-dark',
               light: 'vitesse-light',
             },
             defaultColor: false,
             cssVariablePrefix: '--s-',
-          })
+            transformers: [
+              transformerTwoslash({
+                explicitTrigger: true,
+                renderer: rendererRich(),
+              }),
+            ],
+          }),
         )
-        
+
         md.use(anchor, {
           permalink: anchor.permalink.linkInsideHeader({
             symbol: '#',
@@ -113,6 +97,26 @@ export default defineConfig({
           containerHeaderHtml: '<div class="table-of-contents-anchor"></div>',
         })
       },
+    }),
+
+    AutoImport({
+      imports: ['vue', VueRouterAutoImports, '@vueuse/core'],
+      dirs: ['src/logics'],
+      vueTemplate: true,
+      dts: 'src/auto-imports.d.ts',
+    }),
+
+    Components({
+      // allow auto load markdown components under `./src/components/`
+      extensions: ['vue', 'md'],
+      // allow auto import and register components used in markdown
+      include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+      dts: 'src/components.d.ts',
+      resolvers: [
+        IconsResolver({
+          componentPrefix: '',
+        }),
+      ],
     }),
 
     Icons({
