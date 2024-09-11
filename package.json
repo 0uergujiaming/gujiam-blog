@@ -1,12 +1,13 @@
 {
   "name": "gujiam-blog",
-  "private": true,
-  "version": "1.0.0",
   "type": "module",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite-ssg build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "dependencies": {
     "@vueuse/core": "^10.9.0",
@@ -18,7 +19,11 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.8.3",
+    "@commitlint/cli": "^19.4.1",
+    "@commitlint/config-conventional": "^19.4.1",
     "@iconify/json": "^2.2.194",
+    "@shikijs/markdown-it": "^1.3.0",
+    "@shikijs/twoslash": "^1.3.0",
     "@types/fs-extra": "^11.0.4",
     "@types/markdown-it-link-attributes": "^3.0.4",
     "@types/node": "^20.11.30",
@@ -27,22 +32,29 @@
     "@unocss/reset": "^0.58.6",
     "@vitejs/plugin-vue": "^5.0.4",
     "eslint": "^8.57.0",
+    "eslint-plugin-format": "^0.1.2",
     "fs-extra": "^11.2.0",
     "gray-matter": "^4.0.3",
+    "husky": "^9.1.5",
+    "lint-staged": "^15.2.10",
     "markdown-it-anchor": "^8.6.7",
     "markdown-it-link-attributes": "^4.0.1",
-    "markdown-it-shikiji": "^0.10.2",
+    "shiki": "^1.3.0",
     "typescript": "^5.4.3",
     "unocss": "^0.58.6",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-icons": "^0.18.5",
     "unplugin-vue-components": "^0.26.0",
     "unplugin-vue-markdown": "^0.26.0",
+    "unplugin-vue-router": "^0.10.8",
     "vite": "^5.2.2",
     "vite-plugin-pages": "^0.32.0",
     "vite-plugin-vue-devtools": "^7.0.20",
     "vite-plugin-vue-layouts": "^0.11.0",
     "vite-ssg": "^0.23.6",
     "vue-tsc": "^2.0.7"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
   }
 }

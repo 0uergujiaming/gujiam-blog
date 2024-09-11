@@ -1,17 +1,11 @@
 ---
 title: 博客搭建
-date: 2021-10-3 16:00:00
+date: 2024-02-03 16:00:00
 description: 博客的搭建记录
+hidden: true
 ---
 
-
-<route lang="yaml">
-meta:
-  layout: home
-</route>
-
 [[toc]]
-
 
 记录下博客项目的搭建记录
 
@@ -24,7 +18,7 @@ meta:
 
 ### 使用vite创建vue3+ts项目
 
-```js
+```bash
 pnpm create vite
 ```
 
@@ -34,7 +28,7 @@ pnpm create vite
 
 使用[vite-ssg](https://github.com/antfu/vite-ssg)生成静态站点
 
-```js
+```bash
 pnpm add vite-ssg -D
 ```
 
@@ -46,7 +40,7 @@ import App from './App.vue'
 export const createApp = ViteSSG(App)
 ```
 
-```json
+```diff
 // package.json
 {
   "scripts": {
@@ -61,23 +55,20 @@ export const createApp = ViteSSG(App)
 
 使用[vite-plugin-pages](https://github.com/hannoeru/vite-plugin-pages)实现根据目录结构自动生成路由；使用[vite-plugin-vue-layouts](https://github.com/JohnCampionJr/vite-plugin-vue-layouts)实现路由layout，目前没有需要使用到多个layout的场景，方便后续加入；
 
-```js
+```bash
 pnpm add vue-router vite-plugin-pages vite-plugin-vue-layouts -D
 ```
 
-//vite.config.ts
-
-```js
+```ts
+// vite.config.ts
 import Pages from 'vite-plugin-pages'
-...
-
+// plugins
 Pages({
   // 配置需要生成路由的文件后缀
   extensions: ['vue'],
   // 配置需要生成路由的目录
   dirs: 'src/pages',
-}),
-
+})
 ```
 
 ```ts
@@ -92,27 +83,27 @@ export const createApp = ViteSSG(App, {
 
 现在在`src/pages`目录下的vue文件就会自动按照目录结构生成路由了
 
-```js
-src/pages/
-  ├── users/
-  │  ├── [id].vue
-  │  └── index.vue
-  └── users.vue
+```ts
+// src/pages/
+//   ├── users/
+//   │  ├── [id].vue
+//   │  └── index.vue
+//   └── users.vue
 
 [
   {
-    "path": "/users",
-    "component": "/src/pages/users.vue",
-    "children": [
+    path: '/users',
+    component: '/src/pages/users.vue',
+    children: [
       {
-        "path": "",
-        "component": "/src/pages/users/index.vue",
-        "name": "users"
+        path: '',
+        component: '/src/pages/users/index.vue',
+        name: 'users'
       },
       {
-        "path": ":id",
-        "component": "/src/pages/users/[id].vue",
-        "name": "users-id"
+        path: ':id',
+        component: '/src/pages/users/[id].vue',
+        name: 'users-id'
       }
     ]
   }
@@ -124,13 +115,11 @@ src/pages/
 ```ts
 // vite.config.ts
 import Layouts from 'vite-plugin-vue-layouts'
-
-...
-
+// plugins
 Layouts({
   // 配置默认使用的layout，默认使用src/layouts目录，‘home’指向home.vue
   defaultLayout: 'home',
-}),
+})
 ```
 
 ```vue
@@ -148,8 +137,6 @@ Layouts({
 // main.ts
 
 import { setupLayouts } from 'virtual:generated-layouts'
-
-...
 export const createApp = ViteSSG(
   App,
   {
@@ -161,7 +148,9 @@ export const createApp = ViteSSG(
 现在所有路由都可以自动使用这个带`navbar`的`home layout`了，需要使用其他`layout`的页面可以在页面内加入配置
 
 ```vue
-<template>我是使用其他layout的页面</template>
+<template>
+  我是使用其他layout的页面
+</template>
 
 <route lang="yaml">
 meta:
@@ -175,23 +164,19 @@ meta:
 
 ```json
 // tsconfig.json
-
 {
   "compilerOptions": {
-    ...
-    "types": [...,"vite-plugin-pages/client","vite-plugin-vue-layouts/client"],
+    "types": ["vite-plugin-pages/client", "vite-plugin-vue-layouts/client"]
 
-  },
-  ...
+  }
 }
-
 ```
 
 ### vue-use
 
 使用[vue-use](https://vueuse.org/)提升开发效率
 
-```js
+```bash
 pnpm add @vueuse/core
 ```
 
@@ -199,7 +184,7 @@ pnpm add @vueuse/core
 
 使用[unplugin-vue-components](https://github.com/unplugin/unplugin-vue-components)实现组件的自动导入，使用[unplugin-auto-import](https://github.com/unplugin/unplugin-auto-import)实现`hooks`自动导入
 
-```js
+```bash
 pnpm add -D unplugin-vue-components unplugin-auto-import
 ```
 
@@ -208,9 +193,6 @@ pnpm add -D unplugin-vue-components unplugin-auto-import
 
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-
-...
-
 AutoImport({
   // 配置支持哪些包自动导入
   imports: ['vue', 'vue-router', '@vueuse/core'],
@@ -220,7 +202,7 @@ AutoImport({
   vueTemplate: true,
   // 配置d.ts类型文件生成位置，默认在根目录下
   dts: 'src/components.d.ts',
-}),
+})
 
 Components({
   // 配置哪些文件支持自动导入为组件，不指定目录是默认为src/components目录下
@@ -229,7 +211,7 @@ Components({
   include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
   // 配置d.ts类型文件生成位置，默认在根目录下
   dts: 'src/components.d.ts',
-}),
+})
 ```
 
 现在项目内就可以写组件名或者hooks不需要手动导入了，而且还有`ts`类型支持
@@ -238,7 +220,7 @@ Components({
 
 使用[unocss](https://unocss.dev/)提升开发效率和体验
 
-```js
+```bash
 pnpm add unocss -D
 ```
 
@@ -268,9 +250,9 @@ export default defineConfig({
   presets: [
     presetIcons({
       extraProperties: {
-        display: 'inline-block',
-        height: '1.2em',
-        width: '1.2em',
+        'display': 'inline-block',
+        'height': '1.2em',
+        'width': '1.2em',
         'vertical-align': 'text-bottom',
       },
     }),
@@ -304,7 +286,7 @@ export default defineConfig({
 
 使用图标
 
-```js
+```bash
 pnpm add -D @iconify/json
 ```
 
@@ -323,17 +305,7 @@ pnpm add -D @iconify/json
 使用[markdown-it-anchor](https://github.com/valeriangalliat/markdown-it-anchor)优化`anchor`
 使用[markdown-it-link-attributes](https://github.com/crookedneighbor/markdown-it-link-attributes)优化`a`标签
 
-```md
----
-name: My Cool App
----
-
-# Hello World
-
-This is {{frontmatter.name}}
-```
-
-```js
+```bash
 pnpm add unplugin-vue-markdown markdown-it-shikiji markdown-it-anchor markdown-it-link-attributes @unhead/vue -D
 ```
 
@@ -383,7 +355,7 @@ Markdown({
       },
     })
   },
-}),
+})
 ```
 
 ```vue
@@ -400,47 +372,48 @@ const route = useRoute()
 
 <template>
   // 可以从frontmatter中拿到一些博客的信息做统一展示，比如博客标题、介绍和创建时间，如：
-  <div>{{frontmatter.title}}</div>
-  <div>{{frontmatter.date}}</div>
+  <div>{{ frontmatter.title }}</div>
+  <div>{{ frontmatter.date }}</div>
   // 博客内容会渲染到slot中
-  <article ref="content" :class="[frontmatter.class]">
+  <article :class="[frontmatter.class]">
     <slot />
   </article>
 </template>
-
 ```
+
 现在所有的`md`文件都可以在运行时编译成`vue`组件了,在`vite.config.ts`中调整配置
+
 ```ts
 // vite.config.ts
 Vue({
   include: [/\.vue$/, /\.md$/],
-  ...
-}),
+})
 
 Pages({
   extensions: ['vue', 'md'],
-  ...
-}),
+})
 
 Components({
   extensions: ['vue', 'md'],
-  ...
-}),
+})
 ```
+
 把原先只支持`vue`文件的地方都追加上`md`，项目中就可以完全把`md`文件当成`vue`文件使用了
 
 ### 实现博客列表
+
 定义博客列表路由，在`src/pages`下创建`blogs`目录,在目录下创建`index.md`，这个时候`/blogs`路由就指向这个`md`了
 
 计划获取到`blogs`目录下除`index.md`以外的`markdown`文件的`frontmatter`来生成博客列表的数据，开干吧
 首先要实现`routes`配置中能获取到`frontmatter`，通过`vite-plugin-pages`的`extendRoute`配置可以实现在自动生成的路由配置中自定义修改
+
 ```ts
 // vite.config.ts
 import { resolve } from 'node:path'
 import matter from 'gray-matter'
 
 Pages({
-  ...
+  // ...
   extendRoute(route) {
     // 获取到路由对应的文件路径，只对md文件做处理
     const path = resolve(__dirname, route.component.slice(1))
@@ -453,9 +426,11 @@ Pages({
 
     return route
   },
-}),
+})
 ```
+
 封装`BlogList`组件
+
 ```vue
 // components/BlogList.vue
 
@@ -464,8 +439,8 @@ const router = useRouter()
 // 拿到所有路由，过滤出blogs目录下除index外的所有路由，从route.meta.frontmatter中拿到需要的数据生成列表
 const blogs = router
   .getRoutes()
-  .filter((i) => i.path.startsWith('/blogs/') && i.meta.frontmatter)
-  .map((i) => ({
+  .filter(i => i.path.startsWith('/blogs/') && i.meta.frontmatter)
+  .map(i => ({
     path: i.meta.frontmatter.redirect || i.path,
     title: i.meta.frontmatter.title,
     date: i.meta.frontmatter.date,
@@ -476,10 +451,12 @@ const blogs = router
 <template>
   <ul>
     <template v-if="!blogs.length">
-      <div py2 op50>{ nothing }</div>
+      <div py2 op50>
+        { nothing }
+      </div>
     </template>
 
-    <template v-for="(route, idx) in blogs" :key="route.path">
+    <template v-for="route in blogs" :key="route.path">
       ...
     </template>
   </ul>
@@ -487,6 +464,7 @@ const blogs = router
 ```
 
 在`pages/blogs/index.md`中使用`BlogList`组件
+
 ```
 // pages/blogs/index.md
 
@@ -502,15 +480,16 @@ description: 我的博客列表页面
 这样就实现了自动根据`blogs`目录下的文件生成博客列表,之后写博客直接在该目录下写`md`就行了
 
 ### devtools
-```js
+
+```bash
 pnpm add vite-plugin-vue-devtools -D
 ```
+
 ```ts
 // vite.config.ts
 import VueDevTools from 'vite-plugin-vue-devtools'
 
 plugins: [
-  ...
-  VueDevTools(),
+  ...VueDevTools(),
 ]
 ```
