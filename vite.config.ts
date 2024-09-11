@@ -94,7 +94,9 @@ export default defineConfig({
         md.use(TOC, {
           includeLevel: [1, 2, 3, 4],
           // slugify,
-          containerHeaderHtml: '<div class="table-of-contents-anchor"></div>',
+          containerHeaderHtml: `<div class="table-of-contents-anchor">
+            <div class="i-ri-menu-2-fill" />
+          </div>`,
         })
       },
     }),
